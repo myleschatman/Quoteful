@@ -12,7 +12,7 @@ import {
     View
 } from 'react-native';
 
-var API_KEY = 'fx_K6dXJn4bzzmH41HA44QeF';
+var API_KEY = '';
 var REQUEST_URL = 'http://quotes.rest/quote.json?api_key=' + API_KEY;
 var options = "Quotes";
 var obj = {
