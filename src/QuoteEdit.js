@@ -15,7 +15,8 @@ class QuoteEdit extends Component {
     constructor(props) {
         super(props);
         const myFirebaseRef = new Firebase('https://shining-fire-4744.firebaseio.com');
-        this.itemsRef = myFirebaseRef.child('items');
+        var authData = myFirebaseRef.getAuth().uid;
+        this.ref = myFirebaseRef.child('users/' + authData + '/data');
         this.state = {
             newQuote: quote,
             newAuthor: author
@@ -55,8 +56,8 @@ class QuoteEdit extends Component {
         );
     }
     updateQuote() {
-        this.itemsRef.child(id).update({quote: this.state.newQuote});
-        this.itemsRef.child(id).update({author: this.state.newAuthor});
+        this.ref.child(id).update({quote: this.state.newQuote});
+        this.ref.child(id).update({author: this.state.newAuthor});
     }
     onShare() {
         message = quote + '\n-' + author

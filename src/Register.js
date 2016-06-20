@@ -21,7 +21,6 @@ class Register extends Component {
         this.ref = myFirebaseRef.child('users');
         this.state = {
             loaded: true,
-            username: '',
             email: '',
             password: ''
         };
@@ -48,8 +47,8 @@ class Register extends Component {
                         alert("Error creating account.");
                 }
             } else {
-                this.ref = this.ref.child(userData.uid)
-                this.ref.set({'info': {'username': this.state.username, 'email': this.state.email}});
+                //this.ref = this.ref.child(userData.uid)
+                //this.ref.set({'info': {'username': this.state.username, 'email': this.state.email}});
                 this.redirect('Login');
             }
         });
@@ -57,14 +56,6 @@ class Register extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <TextInput
-                    onChangeText={(
-                        text) => this.setState({
-                            username: text
-                        })}
-                        style={styles.input}
-                        placeholder="Username">
-                </TextInput>
                 <TextInput
                     onChangeText={(
                         text) => this.setState({

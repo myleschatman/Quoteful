@@ -45,9 +45,11 @@ class QuoteRender extends Component {
     }
     componentDidMount() {
         this.fetchData();
-        this.ref.on('child_added', (dataSnapshot) => {
+        /*this.ref.once('value', (dataSnapshot) => {
             this.data.push({id: dataSnapshot.key(), text: dataSnapshot.val()});
-        });
+            console.log(dataSnapshot.key());
+            console.log(dataSnapshot.val());
+        });*/
     }
     fetchData() {
         fetch(REQUEST_URL, obj)

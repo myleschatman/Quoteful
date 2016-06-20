@@ -34,23 +34,23 @@ class QuoteList extends Component {
         );
     }
     componentDidMount() {
-        this.ref.on('child_added', (dataSnapshot) => {
+        this.ref.orderByChild("author").on('child_added', (dataSnapshot) => {
             this.data.push({id: dataSnapshot.key(), text: dataSnapshot.val()});
             this.setState({
                 dataSource: this.state.dataSource.cloneWithRows(this.data)
             });
         });
-        this.ref.on('child_removed', (dataSnapshot) => {
+        this.ref.orderByChild("author").on('child_changed', (dataSnapshot) => {
+            this.data = this.data.filter((x) => x.id !== dataSnapshot.key());
+            this.data.unshift({id: dataSnapshot.key(), text: dataSnapshot.val()});
+            this.setState({
+                dataSource: this.state.dataSource.cloneWithRows(this.data)
+            })
+        });
+        this.ref.orderByChild("author").on('child_removed', (dataSnapshot) => {
             this.data = this.data.filter((x) => x.id !== dataSnapshot.key());
             this.setState({
               dataSource: this.state.dataSource.cloneWithRows(this.data)
-            });
-        });
-        this.ref.on('value', (dataSnapshot) => {
-            console.log(dataSnapshot.val())
-            data = dataSnapshot.val()
-            this.setState({
-                dataSource: this.state.dataSource.cloneWithRows(this.data)
             });
         });
     }
@@ -82,6 +82,7 @@ class QuoteList extends Component {
     }
     removeQuote(data) {
         this.ref.child(data.id).remove();
+
     }
     editQuote(data) {
         quote = data.text.quote;
