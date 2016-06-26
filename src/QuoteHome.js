@@ -20,9 +20,6 @@ export default class QuoteHome extends Component {
     }
     render() {
         return (
-            /*<TabBarIOS selectedTab={this.state.selectedTab}>
-
-            </TabBarIOS>*/
             <TabBarIOS selectedTab={this.state.selectedTab}>
                 <Icon.TabBarItem
                     selected={this.state.selectedTab === 'ios-home'}
