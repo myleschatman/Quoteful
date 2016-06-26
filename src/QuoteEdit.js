@@ -11,12 +11,13 @@ import {
     View
 } from 'react-native';
 
-class QuoteEdit extends Component {
+export default class QuoteEdit extends Component {
     constructor(props) {
         super(props);
         const myFirebaseRef = new Firebase('https://shining-fire-4744.firebaseio.com');
         var authData = myFirebaseRef.getAuth().uid;
         this.ref = myFirebaseRef.child('users/' + authData + '/data');
+        //console.log(props)
         this.state = {
             newQuote: quote,
             newAuthor: author
@@ -56,8 +57,16 @@ class QuoteEdit extends Component {
         );
     }
     updateQuote() {
-        this.ref.child(id).update({quote: this.state.newQuote});
-        this.ref.child(id).update({author: this.state.newAuthor});
+        this.ref.child(id).update({
+            quote: this.state.newQuote,
+            author: this.state.newAuthor
+        }, (error) => {
+            if (error) {
+                alert("Synchronization failed.");
+            } else {
+                alert("Quote updated successfully!");
+            }
+        });
     }
     onShare() {
         message = quote + '\n-' + author

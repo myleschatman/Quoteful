@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import QuoteRender from './QuoteRender';
 import Login from './Login';
 import Firebase from 'firebase';
 import {
-    AppRegistry,
     StyleSheet,
     TouchableHighlight,
     NavigatorIOS,
@@ -13,25 +11,22 @@ import {
     View
 } from 'react-native';
 
-const myFirebaseRef = new Firebase('https://shining-fire-4744.firebaseio.com/');
+const ref = new Firebase('https://shining-fire-4744.firebaseio.com/');
 
-class Register extends Component {
+export default class Register extends Component {
     constructor(props) {
         super(props);
-        this.ref = myFirebaseRef.child('users');
         this.state = {
             loaded: true,
+            username: '',
             email: '',
             password: ''
         };
-    }
-    redirect(routeName) {
-        this.props.navigator.push({
-            name: routeName,
-        });
+        this.ref = ref.child('users');
     }
     register() {
         this.ref.createUser({
+            username: this.state.username,
             email: this.state.email,
             password: this.state.password
         }, (error, userData) => {
@@ -47,26 +42,36 @@ class Register extends Component {
                         alert("Error creating account.");
                 }
             } else {
-                //this.ref = this.ref.child(userData.uid)
-                //this.ref.set({'info': {'username': this.state.username, 'email': this.state.email}});
+                this.ref = this.ref.child(userData.uid)
+                this.ref.set({'info': {'username': this.state.username, 'email': this.state.email}});
                 this.redirect('Login');
             }
+        });
+    }
+    redirect(routeName) {
+        this.props.navigator.push({
+            name: routeName,
         });
     }
     render() {
         return (
             <View style={styles.container}>
                 <TextInput
-                    onChangeText={(
-                        text) => this.setState({
+                    onChangeText={(text) => this.setState({
+                            username: text
+                        })}
+                        style={styles.input}
+                        placeholder="Username">
+                </TextInput>
+                <TextInput
+                    onChangeText={(text) => this.setState({
                             email: text
                         })}
                         style={styles.input}
                         placeholder="Email">
                 </TextInput>
                 <TextInput
-                    onChangeText={(
-                        text) => this.setState({
+                    onChangeText={(text) => this.setState({
                             password: text
                         })}
                         style={styles.input}
@@ -97,7 +102,7 @@ const styles = StyleSheet.create({
       flex: 1,
       justifyContent: 'flex-start',
       alignItems: 'center',
-      backgroundColor: '#f6f1ed',
+      backgroundColor: '#F6F1ED',
       padding: 10,
       paddingTop: 80
     },
@@ -107,11 +112,11 @@ const styles = StyleSheet.create({
       padding: 4,
       fontSize: 18,
       borderWidth: 1,
-      borderColor: '#6a5750'
+      borderColor: '#6A5750'
     },
     button: {
       height: 50,
-      backgroundColor: '#6a5750',
+      backgroundColor: '#6A5750',
       alignSelf: 'stretch',
       marginTop: 10,
       justifyContent: 'center'

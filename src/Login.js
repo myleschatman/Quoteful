@@ -1,38 +1,33 @@
 import React, { Component } from 'react';
+import Register from './Register'
 import QuoteHome from './QuoteHome';
+import QuoteRender from './QuoteRender';
 import Firebase from 'firebase';
 import {
-    AppRegistry,
-    StyleSheet,
     TouchableHighlight,
+    AsyncStorage,
+    StyleSheet,
     TextInput,
     Text,
     View
 } from 'react-native';
 
-const myFirebaseRef = new Firebase('https://shining-fire-4744.firebaseio.com/');
+const ref = new Firebase('https://shining-fire-4744.firebaseio.com/');
 
-class Login extends Component {
+export default class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            loaded: true,
             email: '',
-            password: '',
+            password: ''
         };
     }
-
-    redirect(routeName) {
-        this.props.navigator.push({
-            name: routeName,
-        });
-    }
     login() {
-        myFirebaseRef.authWithPassword({
+        ref.authWithPassword({
             "email": this.state.email,
             "password": this.state.password
         }, (error, userData) => {
-            if(error) {
+            if (error) {
                 switch (error.code) {
                     case "INVALID_EMAIL":
                         alert("The specified user account is invalid.");
@@ -47,24 +42,30 @@ class Login extends Component {
                         alert("Error logging user in")
                 }
             } else {
-                this.redirect('QuoteHome');
+                AsyncStorage.setItem('userData', JSON.stringify(userData));
+                this.props.navigator.push({
+                    component: QuoteHome
+                });
             }
+        });
+    }
+    register() {
+        this.props.navigator.push({
+            component: Register
         });
     }
     render() {
         return (
             <View style={styles.container}>
                 <TextInput
-                    onChangeText={(
-                        text) => this.setState({
+                    onChangeText={(text) => this.setState({
                             email: text
                         })}
                         style={styles.input}
                         placeholder="Email">
                 </TextInput>
                 <TextInput
-                    onChangeText={(
-                        text) => this.setState({
+                    onChangeText={(text) => this.setState({
                             password: text
                         })}
                         style={styles.input}
@@ -79,7 +80,7 @@ class Login extends Component {
                     </Text>
                 </TouchableHighlight>
                 <TouchableHighlight style={styles.login}
-                    onPress={() => this.redirect('Register')}
+                    onPress={() => this.register.bind(this)}
                     underlayColor='#fff'>
                     <Text style={styles.loginText}>
                         Dont Have An Account?

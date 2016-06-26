@@ -1,20 +1,21 @@
 import React, { Component } from 'react';
+import Login from './Login'; // delete?
 import Icon from 'react-native-vector-icons/Ionicons';
 import Firebase from 'firebase';
 import {
-    AppRegistry,
+    TouchableHighlight,
+    AsyncStorage,
     StyleSheet,
+    ListView,
     NavigatorIOS,
     TabBarIOS,
-    TouchableHighlight,
-    ListView,
     Text,
     View
 } from 'react-native';
 
-var API_KEY = 'fx_K6dXJn4bzzmH41HA44QeF';
-var REQUEST_URL = 'http://quotes.rest/quote.json?api_key=' + API_KEY;
-var options = "Quotes";
+const API_KEY = 'fx_K6dXJn4bzzmH41HA44QeF';
+const REQUEST_URL = 'http://quotes.rest/quote.json?api_key=' + API_KEY;
+const ref = new Firebase('https://shining-fire-4744.firebaseio.com');
 var obj = {
     method: 'GET',
     headers: {
@@ -23,33 +24,27 @@ var obj = {
     },
 }
 
-class QuoteRender extends Component {
+export default class QuoteRender extends Component {
     constructor(props) {
         super(props);
-        const myFirebaseRef = new Firebase('https://shining-fire-4744.firebaseio.com');
-        var authData = myFirebaseRef.getAuth().uid;
-        this.ref = myFirebaseRef.child('users/' + authData)
         this.state = {
             quotes: null,
-            author: null
+            author: null,
+            uid: null
         };
+        this.quoteRef = ref.child('users/' + this.state.uid)
         this.data=[];
+
     }
-    render() {
-        if (!this.state.quotes) {
-            return this.renderLoadingView();
-        }
-        var quotes = this.state.quotes;
-        var author = this.state.author;
-        return this.renderQuote(quotes, author);
+    componentWillMount() {
+        AsyncStorage.getItem('uid').then((data) => {
+            this.setState({
+                uid: data
+            })
+        })
     }
     componentDidMount() {
         this.fetchData();
-        /*this.ref.once('value', (dataSnapshot) => {
-            this.data.push({id: dataSnapshot.key(), text: dataSnapshot.val()});
-            console.log(dataSnapshot.key());
-            console.log(dataSnapshot.val());
-        });*/
     }
     fetchData() {
         fetch(REQUEST_URL, obj)
@@ -71,7 +66,27 @@ class QuoteRender extends Component {
             </View>
         );
     }
-    renderQuote(quotes, author) {
+    addQuote(quotes, author) {
+        this.quoteRef.child('data').push({
+            quote: this.state.quotes,
+            author: this.state.author
+        });
+        this.fetchData();
+    }
+    logout() {
+        AsyncStorage.removeItem('userData').then(() => {
+            ref.unauth();
+            this.props.navigator.push({
+                component: Login
+            });
+        });
+    }
+    render() {
+        if (!this.state.quotes) {
+            return this.renderLoadingView();
+        }
+        let quotes = this.state.quotes;
+        let author = this.state.author;
         return (
             <View style={styles.container}>
                 <View style={styles.rightContainer}>
@@ -84,16 +99,14 @@ class QuoteRender extends Component {
                         underlayColor='#6a5750'>
                         <Text style={styles.btnText}>Save Quote</Text>
                     </TouchableHighlight>
+                    <TouchableHighlight style={styles.button}
+                        onPress={() => this.logout()}
+                        underlayColor='#6a5750'>
+                        <Text style={styles.btnText}>Logout</Text>
+                    </TouchableHighlight>
                 </View>
             </View>
         );
-    }
-    addQuote(quotes, author) {
-        this.ref.child('data').push({
-            quote: this.state.quotes,
-            author: this.state.author
-        });
-        this.fetchData();
     }
 }
 
@@ -102,7 +115,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#f6f1ed',
+        backgroundColor: '#F6F1ED',
         padding: 10
     },
     rightContainer: {
@@ -117,7 +130,7 @@ const styles = StyleSheet.create({
         width: 150,
         borderRadius: 6,
         borderWidth: 2,
-        borderColor: '#6a5750',
+        borderColor: '#6A5750',
         marginTop: 30
     },
     btnText: {
@@ -127,7 +140,7 @@ const styles = StyleSheet.create({
         marginTop: 5,
         fontSize: 20,
         fontFamily: 'Avenir',
-        color: '#6a5750'
+        color: '#6A5750'
     },
     quote: {
         fontWeight: 'bold',

@@ -3,24 +3,26 @@ import Firebase from 'firebase';
 import QuoteEdit from './QuoteEdit';
 import Swipeout from 'react-native-swipeout';
 import {
-    AppRegistry,
-    StyleSheet,
     TouchableHighlight,
+    StyleSheet,
     ListView,
     Text,
     View
 } from 'react-native';
 
+const ref = new Firebase('https://shining-fire-4744.firebaseio.com');
+
 class QuoteList extends Component {
     constructor(props) {
         super(props)
-        const myFirebaseRef = new Firebase('https://shining-fire-4744.firebaseio.com');
-        var authData = myFirebaseRef.getAuth().uid;
-        this.ref = myFirebaseRef.child('users/' + authData + '/data');
+        //console.log(this.state.uid)
+        var authData = ref.getAuth().uid;
+        this.quoteRef = ref.child('users/' + authData + '/data');
         this.state = {
             dataSource: new ListView.DataSource({
                 rowHasChanged: (row1, row2) => row1 !== row2
-            })
+            }),
+            //uid: null
         };
         this.data=[]
     }
@@ -34,20 +36,20 @@ class QuoteList extends Component {
         );
     }
     componentDidMount() {
-        this.ref.orderByChild("author").on('child_added', (dataSnapshot) => {
+        this.quoteRef.orderByChild("author").on('child_added', (dataSnapshot) => {
             this.data.push({id: dataSnapshot.key(), text: dataSnapshot.val()});
             this.setState({
                 dataSource: this.state.dataSource.cloneWithRows(this.data)
             });
         });
-        this.ref.orderByChild("author").on('child_changed', (dataSnapshot) => {
+        this.quoteRef.orderByChild("author").on('child_changed', (dataSnapshot) => {
             this.data = this.data.filter((x) => x.id !== dataSnapshot.key());
             this.data.unshift({id: dataSnapshot.key(), text: dataSnapshot.val()});
             this.setState({
                 dataSource: this.state.dataSource.cloneWithRows(this.data)
             })
         });
-        this.ref.orderByChild("author").on('child_removed', (dataSnapshot) => {
+        this.quoteRef.orderByChild("author").on('child_removed', (dataSnapshot) => {
             this.data = this.data.filter((x) => x.id !== dataSnapshot.key());
             this.setState({
               dataSource: this.state.dataSource.cloneWithRows(this.data)
@@ -58,7 +60,7 @@ class QuoteList extends Component {
         let swipeBtn = [{
             text: 'Delete',
             backgroundColor: 'red',
-            onPress: () => {this.removeQuote(data)}
+            onPress: () => {this.quoteRef.child(data.id).remove();}
         }];
         return (
             <Swipeout right={swipeBtn}
@@ -80,10 +82,6 @@ class QuoteList extends Component {
             </Swipeout>
         );
     }
-    removeQuote(data) {
-        this.ref.child(data.id).remove();
-
-    }
     editQuote(data) {
         quote = data.text.quote;
         author = data.text.author;
@@ -92,7 +90,9 @@ class QuoteList extends Component {
         this.props.navigator.push({
             title: 'Edit Quote',
             component: QuoteEdit,
-            passProps: {quote, author, id}
+            passProps: {
+                quote, author, id
+            }
         });
     }
 }

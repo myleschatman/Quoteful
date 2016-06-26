@@ -1,27 +1,28 @@
 import React, { Component } from 'react';
-import Register from './Register';
 import QuoteRender from './QuoteRender';
 import QuoteList from './QuoteList';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {
-    AppRegistry,
     StyleSheet,
-    TouchableHighlight,
     NavigatorIOS,
     TabBarIOS,
     Text,
     View
 } from 'react-native';
 
-class QuoteHome extends Component {
+export default class QuoteHome extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            selectedTab: 'ios-home'
+            selectedTab: 'ios-home',
+            component: null
         };
     }
     render() {
         return (
+            /*<TabBarIOS selectedTab={this.state.selectedTab}>
+
+            </TabBarIOS>*/
             <TabBarIOS selectedTab={this.state.selectedTab}>
                 <Icon.TabBarItem
                     selected={this.state.selectedTab === 'ios-home'}
@@ -59,6 +60,7 @@ class QuoteHome extends Component {
         );
     }
 }
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -76,7 +78,7 @@ const styles = StyleSheet.create({
         width: 150,
         borderRadius: 6,
         borderWidth: 2,
-        borderColor: '#6a5750',
+        borderColor: '#6A5750',
         marginTop: 30
     },
     btnText: {
@@ -86,7 +88,7 @@ const styles = StyleSheet.create({
         marginTop: 5,
         fontSize: 20,
         fontFamily: 'Avenir',
-        color: '#6a5750'
+        color: '#6A5750'
     },
     quote: {
         fontWeight: 'bold',
