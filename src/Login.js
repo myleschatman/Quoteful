@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import Register from './Register'
-import QuoteHome from './QuoteHome';
-import QuoteRender from './QuoteRender';
+import Welcome from './Welcome';
+import QuoteMain from './QuoteMain';
+import QuoteRender from './QuoteRender'
 import Firebase from 'firebase';
 import {
-    TouchableHighlight,
     AsyncStorage,
     StyleSheet,
+    TouchableHighlight,
     TextInput,
     Text,
-    View
+    View,
 } from 'react-native';
 
 const ref = new Firebase('https://shining-fire-4744.firebaseio.com/');
@@ -43,9 +44,9 @@ export default class Login extends Component {
                 }
             } else {
                 AsyncStorage.setItem('userData', JSON.stringify(userData));
-                this.props.navigator.push({
-                    component: QuoteHome
-                });
+                this.props.navigator.immediatelyResetRouteStack([{
+                    component: QuoteMain
+                }]);
             }
         });
     }
@@ -80,7 +81,7 @@ export default class Login extends Component {
                     </Text>
                 </TouchableHighlight>
                 <TouchableHighlight style={styles.login}
-                    onPress={() => this.register.bind(this)}
+                    onPress={() => this.register()}
                     underlayColor='#fff'>
                     <Text style={styles.loginText}>
                         Dont Have An Account?
@@ -96,7 +97,7 @@ const styles = StyleSheet.create({
       flex: 1,
       justifyContent: 'flex-start',
       alignItems: 'center',
-      backgroundColor: '#f6f1ed',
+      backgroundColor: '#F6F1ED',
       padding: 10,
       paddingTop: 80
     },
@@ -106,11 +107,11 @@ const styles = StyleSheet.create({
       padding: 4,
       fontSize: 18,
       borderWidth: 1,
-      borderColor: '#6a5750'
+      borderColor: '#6A5750'
     },
     button: {
       height: 50,
-      backgroundColor: '#6a5750',
+      backgroundColor: '#6A5750',
       alignSelf: 'stretch',
       marginTop: 10,
       justifyContent: 'center'
@@ -130,17 +131,7 @@ const styles = StyleSheet.create({
       color: '#935347',
       marginTop: 5,
       marginBottom: 5,
-    },
-    heading: {
-      fontSize: 30,
-    },
-    error: {
-      color: 'red',
-      paddingTop: 10
-    },
-    loader: {
-      marginTop: 20
     }
 });
 
-module.exports = Login;
+export default Login;

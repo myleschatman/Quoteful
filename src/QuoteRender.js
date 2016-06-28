@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import Login from './Login'; // delete?
+import Welcome from './Welcome';
+import QuoteList from './QuoteList';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Firebase from 'firebase';
 import {
@@ -27,24 +28,18 @@ var obj = {
 export default class QuoteRender extends Component {
     constructor(props) {
         super(props);
+        let authData = ref.getAuth();
+        this.quoteRef = ref.child('users/' + authData.uid)
         this.state = {
-            quotes: null,
-            author: null,
-            uid: null
+            selectedTab: 'ios-home',
+            quotes: 'Test Quote',
+            author: 'Author',
         };
-        this.quoteRef = ref.child('users/' + this.state.uid)
         this.data=[];
 
     }
-    componentWillMount() {
-        AsyncStorage.getItem('uid').then((data) => {
-            this.setState({
-                uid: data
-            })
-        })
-    }
     componentDidMount() {
-        this.fetchData();
+        //this.fetchData();
     }
     fetchData() {
         fetch(REQUEST_URL, obj)
@@ -76,9 +71,10 @@ export default class QuoteRender extends Component {
     logout() {
         AsyncStorage.removeItem('userData').then(() => {
             ref.unauth();
-            this.props.navigator.push({
-                component: Login
-            });
+            this.props.navigator.immediatelyResetRouteStack([{
+                component: Welcome
+                //navigationBarHidden: true
+            }]);
         });
     }
     render() {

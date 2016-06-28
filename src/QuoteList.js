@@ -25,15 +25,6 @@ class QuoteList extends Component {
         };
         this.data=[]
     }
-    render() {
-        return (
-            <ListView
-                dataSource={this.state.dataSource}
-                renderRow={this.renderList.bind(this)}
-                style={styles.listView}
-            />
-        );
-    }
     componentDidMount() {
         this.quoteRef.orderByChild("author").on('child_added', (dataSnapshot) => {
             this.data.push({id: dataSnapshot.key(), text: dataSnapshot.val()});
@@ -93,6 +84,15 @@ class QuoteList extends Component {
                 quote, author, id
             }
         });
+    }
+    render() {
+        return (
+            <ListView
+                dataSource={this.state.dataSource}
+                renderRow={this.renderList.bind(this)}
+                style={styles.listView}
+            />
+        );
     }
 }
 

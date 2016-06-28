@@ -11,13 +11,13 @@ import {
     View
 } from 'react-native';
 
+const ref = new Firebase('https://shining-fire-4744.firebaseio.com');
+
 export default class QuoteEdit extends Component {
     constructor(props) {
         super(props);
-        const myFirebaseRef = new Firebase('https://shining-fire-4744.firebaseio.com');
-        var authData = myFirebaseRef.getAuth().uid;
-        this.ref = myFirebaseRef.child('users/' + authData + '/data');
-        //console.log(props)
+        var authData = ref.getAuth().uid;
+        this.ref = ref.child('users/' + authData + '/data');
         this.state = {
             newQuote: quote,
             newAuthor: author

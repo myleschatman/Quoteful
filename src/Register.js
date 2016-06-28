@@ -4,8 +4,6 @@ import Firebase from 'firebase';
 import {
     StyleSheet,
     TouchableHighlight,
-    NavigatorIOS,
-    TabBarIOS,
     TextInput,
     Text,
     View
@@ -22,10 +20,10 @@ export default class Register extends Component {
             email: '',
             password: ''
         };
-        this.ref = ref.child('users');
+        this.userRef = ref.child('users');
     }
     register() {
-        this.ref.createUser({
+        this.userRef.createUser({
             username: this.state.username,
             email: this.state.email,
             password: this.state.password
@@ -42,15 +40,15 @@ export default class Register extends Component {
                         alert("Error creating account.");
                 }
             } else {
-                this.ref = this.ref.child(userData.uid)
-                this.ref.set({'info': {'username': this.state.username, 'email': this.state.email}});
+                this.userRef = this.userRef.child(userData.uid)
+                this.userRef.set({'info': {'username': this.state.username, 'email': this.state.email}});
                 this.redirect('Login');
             }
         });
     }
-    redirect(routeName) {
-        this.props.navigator.push({
-            name: routeName,
+    login() {
+        this.props.navigator.pop({
+            component: Login
         });
     }
     render() {
@@ -86,7 +84,7 @@ export default class Register extends Component {
                     </Text>
                 </TouchableHighlight>
                 <TouchableHighlight style={styles.login}
-                    onPress={() => this.redirect('Login')}
+                    onPress={() => this.login()}
                     underlayColor='#fff'>
                     <Text style={styles.loginText}>
                         Already Have An Account?

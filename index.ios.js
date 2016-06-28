@@ -1,19 +1,24 @@
-import React, { Component } from 'react';
-import QuoteHome from './src/QuoteHome';
+import React, {
+    AppRegistry
+} from 'react-native';
+
+import Welcome from './src/Welcome';
+/*import React, { Component } from 'react';
+import QuoteMain from './src/QuoteMain';
 import QuoteRender from './src/QuoteRender';
 import Register from './src/Register';
 import Login from './src/Login';
 import Firebase from 'firebase';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {
-    TouchableHighlight,
-    AsyncStorage,
     AppRegistry,
     StyleSheet,
+    TouchableHighlight,
     Navigator,
     TabBarIOS,
     Text,
-    View
+    View,
+    AsyncStorage
 } from 'react-native';
 
 const ref = new Firebase('https://shining-fire-4744.firebaseio.com/');
@@ -29,7 +34,7 @@ export default class Quoteful extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            component: QuoteRender
+            component: null
         };
     }
     componentWillMount() {
@@ -42,7 +47,7 @@ export default class Quoteful extends Component {
                         this.setState(component);
                     } else {
                         this.setState({
-                            component: QuoteHome
+                            component: QuoteMain
                         });
                     }
                 });
@@ -61,10 +66,15 @@ export default class Quoteful extends Component {
                     }}
                     renderScene={(route, navigator) => {
                         if (route.component) {
-                            console.log(route.component)
                             return <route.component navigator={navigator} {...route.passProps} />
                         }
                     }}
+                    navigationBar={
+                        <Navigator.NavigationBar
+                            style={styles.nav}
+                            routeMapper={NavigationBarRouteMapper}
+                        />
+                    }
                 />
             );
         } else {
@@ -75,11 +85,27 @@ export default class Quoteful extends Component {
     }
 }
 
+var NavigationBarRouteMapper = {
+    RightButton(route, navigator, index, navState) {
+        return <Text>Right</Text>
+    },
+    LeftButton(route, navigator, index, navState) {
+        return <Text>Left</Text>
+    },
+    Title(route, navigator, index, navState) {
+        return <Text style={ styles.title }>MY APP TITLE</Text>
+    }
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f6f1ed'
+    backgroundColor: '#F6F1ED'
+},
+  nav: {
+      height: 60,
+      backgroundColor: '#efefef'
   }
-});
+});*/
 
-AppRegistry.registerComponent('Quoteful', () => Quoteful);
+AppRegistry.registerComponent('Quoteful', () => Welcome);
