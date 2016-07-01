@@ -1,3 +1,4 @@
+console.disableYellowBox = true;
 import React, {
     AppRegistry
 } from 'react-native';

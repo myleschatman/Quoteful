@@ -42,7 +42,7 @@ export default class Register extends Component {
             } else {
                 this.userRef = this.userRef.child(userData.uid)
                 this.userRef.set({'info': {'username': this.state.username, 'email': this.state.email}});
-                this.redirect('Login');
+                this.login();
             }
         });
     }
@@ -54,41 +54,46 @@ export default class Register extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <TextInput
+                <Text style={styles.logo}>"Q"</Text>
+                <Text style={styles.title}>Quoteful</Text>
+                <TextInput style={styles.input}
                     onChangeText={(text) => this.setState({
                             username: text
                         })}
-                        style={styles.input}
                         placeholder="Username">
                 </TextInput>
-                <TextInput
+                <TextInput style={styles.input}
                     onChangeText={(text) => this.setState({
                             email: text
                         })}
-                        style={styles.input}
                         placeholder="Email">
                 </TextInput>
-                <TextInput
+                <TextInput style={styles.input}
                     onChangeText={(text) => this.setState({
                             password: text
                         })}
-                        style={styles.input}
                         placeholder="Password"
                         secureTextEntry={true}>
                 </TextInput>
-                <TouchableHighlight
+                <TouchableHighlight style={styles.registerButton}
                     onPress={this.register.bind(this)}
-                    style={styles.button}>
+                    underlayColor='transparent'>
                     <Text style={styles.buttonText}>
                         Register
                     </Text>
                 </TouchableHighlight>
-                <TouchableHighlight style={styles.login}
+                <TouchableHighlight style={styles.signin}
                     onPress={() => this.login()}
-                    underlayColor='#fff'>
-                    <Text style={styles.loginText}>
-                        Already Have An Account?
-                    </Text>
+                    underlayColor='transparent'>
+                    <View style={{flexDirection: 'row'}}>
+                        <Text style={styles.signinText1}>
+                            Already have an account?
+                        </Text>
+                        <Text> </Text>
+                        <Text style={styles.signinText2}>
+                            Sign In
+                        </Text>
+                    </View>
                 </TouchableHighlight>
             </View>
         );
@@ -98,53 +103,59 @@ export default class Register extends Component {
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      justifyContent: 'flex-start',
       alignItems: 'center',
-      backgroundColor: '#F6F1ED',
-      padding: 10,
-      paddingTop: 80
+      backgroundColor: '#704427',
+      padding: 40,
+      paddingTop: 70
+    },
+    logo: {
+        fontSize: 100,
+        fontFamily: 'Avenir',
+        color: '#B78D6D'
+    },
+    title: {
+        marginBottom: 20,
+        fontSize: 32,
+        fontFamily: 'Avenir',
+        fontWeight: 'bold',
+        color: '#B78D6D'
     },
     input: {
-      height: 50,
-      marginTop: 10,
-      padding: 4,
-      fontSize: 18,
-      borderWidth: 1,
-      borderColor: '#6A5750'
+        height: 50,
+        padding: 4,
+        fontSize: 18,
+        borderWidth: 1,
+        borderColor: 'transparent',
+        borderBottomColor: '#ccc'
     },
-    button: {
-      height: 50,
-      backgroundColor: '#6A5750',
-      alignSelf: 'stretch',
-      marginTop: 10,
-      justifyContent: 'center'
+    registerButton: {
+        alignSelf: 'stretch',
+        justifyContent: 'center',
+        height: 50,
+        marginTop: 10,
+        marginBottom: 70,
+        backgroundColor: '#532B12'
     },
     buttonText: {
       fontSize: 22,
-      color: '#FFF',
+      color: '#B78D6D',
       alignSelf: 'center'
     },
-    login: {
-        justifyContent: 'center',
+    signin: {
+        marginTop: 70,
         padding: 10
     },
-    loginText: {
-      textAlign: 'center',
-      fontWeight: 'bold',
-      color: '#935347',
-      marginTop: 5,
-      marginBottom: 5,
+    signinText1: {
+        textAlign: 'center',
+        fontFamily: 'Avenir',
+        color: '#B78D6D'
     },
-    heading: {
-      fontSize: 30,
-    },
-    error: {
-      color: 'red',
-      paddingTop: 10
-    },
-    loader: {
-      marginTop: 20
+    signinText2: {
+        textAlign: 'center',
+        fontFamily: 'Avenir',
+        color: '#B78D6D',
+        fontWeight: 'bold'
     }
 });
 
-module.exports = Register;
+export default Register;

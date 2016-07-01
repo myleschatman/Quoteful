@@ -15,7 +15,6 @@ const ref = new Firebase('https://shining-fire-4744.firebaseio.com');
 class QuoteList extends Component {
     constructor(props) {
         super(props)
-        //console.log(this.state.uid)
         var authData = ref.getAuth().uid;
         this.quoteRef = ref.child('users/' + authData + '/data');
         this.state = {
@@ -115,15 +114,15 @@ const styles = StyleSheet.create({
     },
     author: {
         fontFamily: 'Avenir',
-        color: '#935347',
+        color: '#B78D6D',
     },
     separator: {
         height: 1,
-        backgroundColor: '#dddddd'
+        backgroundColor: '#B2B2B2'
     },
     listView: {
         flex: 1,
-        backgroundColor: '#f6f1ed',
+        backgroundColor: '#F6F1ED',
     },
     empty: {
         fontSize: 20,

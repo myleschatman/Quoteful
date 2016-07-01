@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import QuoteRender from './QuoteRender';
 import QuoteList from './QuoteList';
-import Navigation from './Navigation';
+import Profile from './Profile';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {
+    TouchableHighlight,
     StyleSheet,
     Navigator,
     TabBarIOS,
@@ -25,9 +26,17 @@ export default class QuoteMain extends Component {
                 initialRoute={{
                     component: this.state.component
                 }}
-                renderScene={(route, navigator) => {
+                navigationBar={
+                   <Navigator.NavigationBar style={styles.nav}
+                     routeMapper={NavigationBarRouteMapper} />
+                 }
+                 sceneStyle={styles.scene}
+                 renderScene={(route, navigator) => {
+                     console.log(navigator)
                     return (
-                        <TabBarIOS>
+                        <TabBarIOS
+                            tintColor='#704427'
+                            barTintColor='#FFF8F2'>
                             <Icon.TabBarItem
                                 selected={this.state.selectedTab === 'ios-home'}
                                 title='Home'
@@ -38,7 +47,7 @@ export default class QuoteMain extends Component {
                                         component: QuoteRender
                                     });
                                 }}>
-                                <QuoteRender navigator={this.props.navigator}/>
+                                <route.component {...route.passProps} navigator={this.props.navigator}/>
                             </Icon.TabBarItem>
                             <Icon.TabBarItem
                                 selected={this.state.selectedTab === 'ios-quote'}
@@ -50,7 +59,19 @@ export default class QuoteMain extends Component {
                                         component: QuoteList
                                     });
                                 }}>
-                                <QuoteList navigator={this.props.navigator}/>
+                                <QuoteList {...route.passProps} navigator={this.props.navigator}/>
+                            </Icon.TabBarItem>
+                            <Icon.TabBarItem
+                                selected={this.state.selectedTab === 'ios-contact'}
+                                title='Profile'
+                                iconName="ios-contact"
+                                onPress={() => {
+                                    this.setState({
+                                        selectedTab: 'ios-contact',
+                                        component: Profile
+                                    });
+                                }}>
+                                <Profile {...route.passProps} navigator={this.props.navigator}/>
                             </Icon.TabBarItem>
                         </TabBarIOS>
                     );
@@ -58,13 +79,62 @@ export default class QuoteMain extends Component {
             />
         );
     }
+    border (color) {
+        return {
+            borderColor: color,
+            borderWidth: 2
+        }
+    }
+    writeQuote() {
+        console.log("Pressed");
+    }
 }
+
+var NavigationBarRouteMapper = {
+    LeftButton(route, navigator, index, navState) {
+        return null
+    },
+    RightButton(route, navigator, index, navState) {
+        return (
+            <TouchableHighlight
+            onPress={() => route.writeQuote()}>
+                <Icon name="md-add" size={30} style={styles.add}/>
+            </TouchableHighlight>
+        )
+    },
+    Title(route, navigator, index, navState) {
+        return <Text style={styles.navBarText}>Quoteful</Text>
+    }
+};
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#F6f1ED',
+    },
+    scene: {
+        flex: 1,
+        paddingTop: 64
+    },
+    add: {
+        marginRight: 20,
+        marginTop: 2
+    },
+    nav: {
+        paddingTop: 31,
+        paddingBottom: 1.5,
+        //borderBottomWidth: 0.5,
+        //  borderBottomColor: '#B2B2B2',
+        backgroundColor: '#704427'
+    },
+    navBarText: {
+        marginTop: 5,
+        textAlign: 'center',
+        fontSize: 22,
+        fontFamily: 'Avenir',
+        fontWeight: '500',
+        color: '#FFFFFF',
+
     }
 });
 
-module.exports = QuoteMain;
+export default QuoteMain;

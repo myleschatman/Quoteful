@@ -47,6 +47,7 @@ export default class Welcome extends Component {
                         component: this.state.component
                     }}
                     renderScene={(route, navigator) => {
+                        console.log(navigator)
                         return <route.component navigator={navigator}
                             {...route.passProps}/>
                     }}
@@ -63,7 +64,7 @@ export default class Welcome extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#F6F1ED'
+        backgroundColor: '#704427'
     }
 });
 
