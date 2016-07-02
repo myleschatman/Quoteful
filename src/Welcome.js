@@ -17,7 +17,7 @@ export default class Welcome extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            component: null
+            component: null,
         };
     }
     componentWillMount() {
@@ -39,18 +39,17 @@ export default class Welcome extends Component {
             }
         })
     }
+    renderScene(route, navigator) {
+        return <route.component route={route} navigator={navigator} {...route.passProps}/>
+    }
     render() {
         if (this.state.component) {
             return (
                 <Navigator style={styles.container}
                     initialRoute={{
-                        component: this.state.component
+                        component: this.state.component,
                     }}
-                    renderScene={(route, navigator) => {
-                        console.log(navigator)
-                        return <route.component navigator={navigator}
-                            {...route.passProps}/>
-                    }}
+                    renderScene={this.renderScene.bind(this)}
                 />
             );
         } else {

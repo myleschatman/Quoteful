@@ -29,8 +29,8 @@ export default class QuoteRender extends Component {
         let authData = ref.getAuth();
         this.quoteRef = ref.child('users/' + authData.uid)
         this.state = {
-            quotes: null,
-            author: null,
+            quotes: 'Test',
+            author: 'Test',
             id: null,
             image: null
         };
@@ -38,7 +38,7 @@ export default class QuoteRender extends Component {
 
     }
     componentDidMount() {
-        this.fetchQuote();
+        //this.fetchQuote();
     }
     fetchQuote() {
         fetch(QUOTE_URL, obj)
@@ -60,7 +60,6 @@ export default class QuoteRender extends Component {
             this.setState({
                 id: responseData.images[0].id
             });
-            console.log(responseData)
             this.fetchImage();
         })
     }

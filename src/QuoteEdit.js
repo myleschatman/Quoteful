@@ -5,6 +5,7 @@ import {
     AppRegistry,
     StyleSheet,
     TouchableHighlight,
+    NavigatorIOS,
     ListView,
     TextInput,
     Text,
@@ -20,7 +21,7 @@ export default class QuoteEdit extends Component {
         this.ref = ref.child('users/' + authData + '/data');
         this.state = {
             newQuote: quote,
-            newAuthor: author
+            newAuthor: author,
         };
     }
     render() {

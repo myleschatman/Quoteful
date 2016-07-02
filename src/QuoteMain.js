@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import QuoteRender from './QuoteRender';
 import QuoteList from './QuoteList';
+import QuoteEdit from './QuoteEdit'
 import Profile from './Profile';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {
     TouchableHighlight,
     StyleSheet,
     Navigator,
+    NavigatorIOS,
     TabBarIOS,
     Text,
     View
@@ -17,67 +19,93 @@ export default class QuoteMain extends Component {
         super(props);
         this.state = {
             selectedTab: 'ios-home',
-            component: QuoteRender
+            component: QuoteRender,
+            index: 0
         };
     }
+    renderScene(route, navigator) {
+        return <route.component navigator={this.props.navigator} route={route} {...route.passProps}/>
+    }
     render() {
-        return (
-            <Navigator
-                initialRoute={{
-                    component: this.state.component
-                }}
-                navigationBar={
-                   <Navigator.NavigationBar style={styles.nav}
-                     routeMapper={NavigationBarRouteMapper} />
-                 }
-                 sceneStyle={styles.scene}
-                 renderScene={(route, navigator) => {
-                     console.log(navigator)
-                    return (
-                        <TabBarIOS
-                            tintColor='#704427'
-                            barTintColor='#FFF8F2'>
-                            <Icon.TabBarItem
-                                selected={this.state.selectedTab === 'ios-home'}
-                                title='Home'
-                                iconName="ios-home"
-                                onPress={() => {
-                                    this.setState({
-                                        selectedTab: 'ios-home',
-                                        component: QuoteRender
-                                    });
-                                }}>
-                                <route.component {...route.passProps} navigator={this.props.navigator}/>
-                            </Icon.TabBarItem>
-                            <Icon.TabBarItem
-                                selected={this.state.selectedTab === 'ios-quote'}
-                                title='Quotes'
-                                iconName="ios-quote"
-                                onPress={() => {
-                                    this.setState({
-                                        selectedTab: 'ios-quote',
-                                        component: QuoteList
-                                    });
-                                }}>
-                                <QuoteList {...route.passProps} navigator={this.props.navigator}/>
-                            </Icon.TabBarItem>
-                            <Icon.TabBarItem
-                                selected={this.state.selectedTab === 'ios-contact'}
-                                title='Profile'
-                                iconName="ios-contact"
-                                onPress={() => {
-                                    this.setState({
-                                        selectedTab: 'ios-contact',
-                                        component: Profile
-                                    });
-                                }}>
-                                <Profile {...route.passProps} navigator={this.props.navigator}/>
-                            </Icon.TabBarItem>
-                        </TabBarIOS>
-                    );
-                }}
-            />
-        );
+        if (this.props.quote) {
+            return (
+                <Navigator
+                    initialRoute={{
+                        name: 'Edit Quote',
+                        component: QuoteEdit,
+                        index: 1
+                    }}
+                    navigationBar={
+                        <Navigator.NavigationBar style={styles.nav}
+                            routeMapper={NavigationBarRouteMapper} />
+                    }
+                    sceneStyle={styles.scene}
+                    renderScene={this.renderScene.bind(this)}
+                />
+            );
+        } else {
+            return (
+                <Navigator
+                    initialRoute={{
+                        name: 'Quoteful',
+                        component: QuoteRender,
+                        index: 0
+                    }}
+                    navigationBar={
+                        <Navigator.NavigationBar style={styles.nav}
+                            routeMapper={NavigationBarRouteMapper} />
+                    }
+                    sceneStyle={styles.scene}
+                    renderScene={(route, navigator) => {
+                        return (
+                            <TabBarIOS
+                                tintColor='#704427'
+                                barTintColor='#FFF8F2'>
+                                <Icon.TabBarItem
+                                    selected={this.state.selectedTab === 'ios-home'}
+                                    title='Home'
+                                    iconName="ios-home"
+                                    onPress={() => {
+                                        this.setState({
+                                            selectedTab: 'ios-home',
+                                            name: 'Quoteful',
+                                            component: QuoteRender
+                                        });
+                                    }}>
+                                    <QuoteRender {...route.passProps} route={route} navigator={this.props.navigator}/>
+                                </Icon.TabBarItem>
+                                <Icon.TabBarItem
+                                    selected={this.state.selectedTab === 'ios-quote'}
+                                    title='Quotes'
+                                    iconName="ios-quote"
+                                    onPress={() => {
+                                        this.setState({
+                                            selectedTab: 'ios-quote',
+                                            name: 'Quotes',
+                                            component: QuoteList
+                                        });
+                                    }}>
+                                    <QuoteList {...route.passProps} route={route} navigator={this.props.navigator}/>
+                                </Icon.TabBarItem>
+                                <Icon.TabBarItem
+                                    selected={this.state.selectedTab === 'ios-contact'}
+                                    title='Profile'
+                                    iconName="ios-contact"
+                                    onPress={() => {
+                                        this.setState({
+                                            selectedTab: 'ios-contact',
+                                            name: 'Profile',
+                                            component: Profile
+                                        });
+                                    }}>
+                                    <Profile {...route.passProps} route={route} navigator={this.props.navigator}/>
+                                </Icon.TabBarItem>
+                            </TabBarIOS>
+                        );
+                    }}
+                />
+            );
+        }
     }
     border (color) {
         return {
@@ -92,18 +120,25 @@ export default class QuoteMain extends Component {
 
 var NavigationBarRouteMapper = {
     LeftButton(route, navigator, index, navState) {
-        return null
+        if (route.index > 0) {
+            return (
+                <TouchableHighlight
+                onPress={() => navigator.replace({component: QuoteList})}>
+                    <Icon name="ios-arrow-back" size={30} style={styles.back}/>
+                </TouchableHighlight>
+            );
+        }
     },
     RightButton(route, navigator, index, navState) {
         return (
             <TouchableHighlight
-            onPress={() => route.writeQuote()}>
+            onPress={() => writeQuote()}>
                 <Icon name="md-add" size={30} style={styles.add}/>
             </TouchableHighlight>
-        )
+        );
     },
     Title(route, navigator, index, navState) {
-        return <Text style={styles.navBarText}>Quoteful</Text>
+        return <Text style={styles.navBarText}>{route.name}</Text>
     }
 };
 
@@ -119,11 +154,15 @@ const styles = StyleSheet.create({
         marginRight: 20,
         marginTop: 2
     },
+    back: {
+        marginLeft: 20,
+        marginTop: 2
+    },
     nav: {
         paddingTop: 31,
         paddingBottom: 1.5,
         //borderBottomWidth: 0.5,
-        //  borderBottomColor: '#B2B2B2',
+        //borderBottomColor: '#B2B2B2',
         backgroundColor: '#704427'
     },
     navBarText: {

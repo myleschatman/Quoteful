@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import Firebase from 'firebase';
 import QuoteEdit from './QuoteEdit';
+import QuoteMain from './QuoteMain';
+import Icon from 'react-native-vector-icons/Ionicons';
 import Swipeout from 'react-native-swipeout';
 import {
     TouchableHighlight,
+    TabBarIOS,
+    NavigatorIOS,
     StyleSheet,
     ListView,
     Text,
@@ -14,7 +18,7 @@ const ref = new Firebase('https://shining-fire-4744.firebaseio.com');
 
 class QuoteList extends Component {
     constructor(props) {
-        super(props)
+        super(props);
         var authData = ref.getAuth().uid;
         this.quoteRef = ref.child('users/' + authData + '/data');
         this.state = {
@@ -75,10 +79,10 @@ class QuoteList extends Component {
         quote = data.text.quote;
         author = data.text.author;
         id = data.id;
-
+        var nextIndex = this.props.index + 1;
         this.props.navigator.push({
-            title: 'Edit Quote',
-            component: QuoteEdit,
+            component: QuoteMain,
+            index: nextIndex,
             passProps: {
                 quote, author, id
             }
