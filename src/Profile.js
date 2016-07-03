@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Login from './Login';
 import {
+    AsyncStorage,
     TouchableHighlight,
     StyleSheet,
     Text,
