@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
-import Firebase from 'firebase';
 import QuoteEdit from './QuoteEdit';
 import QuoteMain from './QuoteMain';
+import Firebase from 'firebase';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Swipeout from 'react-native-swipeout';
 import {
-    TouchableHighlight,
-    TabBarIOS,
-    NavigatorIOS,
     StyleSheet,
+    TouchableHighlight,
     ListView,
     Text,
     View
@@ -76,13 +74,14 @@ class QuoteList extends Component {
         );
     }
     editQuote(data) {
+        nextIndex = this.props.index + 1;
         quote = data.text.quote;
         author = data.text.author;
         id = data.id;
-        var nextIndex = this.props.index + 1;
+
         this.props.navigator.push({
-            component: QuoteMain,
-            index: nextIndex,
+            name: 'Edit Quote',
+            component: QuoteEdit,
             passProps: {
                 quote, author, id
             }
@@ -127,11 +126,6 @@ const styles = StyleSheet.create({
     listView: {
         flex: 1,
         backgroundColor: '#F6F1ED',
-    },
-    empty: {
-        fontSize: 20,
-        fontFamily: 'Avenir',
-        color: '#935347'
     }
 });
 

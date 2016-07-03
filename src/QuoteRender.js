@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Firebase from 'firebase';
 import {
-    TouchableHighlight,
     StyleSheet,
+    TouchableHighlight,
     Image,
     Text,
     View
@@ -29,8 +29,8 @@ export default class QuoteRender extends Component {
         let authData = ref.getAuth();
         this.quoteRef = ref.child('users/' + authData.uid)
         this.state = {
-            quotes: 'Test',
-            author: 'Test',
+            quotes: null,
+            author: null,
             id: null,
             image: null
         };
@@ -38,7 +38,7 @@ export default class QuoteRender extends Component {
 
     }
     componentDidMount() {
-        //this.fetchQuote();
+        this.fetchQuote();
     }
     fetchQuote() {
         fetch(QUOTE_URL, obj)
@@ -105,20 +105,14 @@ export default class QuoteRender extends Component {
                         <Text style={styles.author}>{author}</Text>
                     </View>
                     <View>
-                        <TouchableHighlight style={styles.buttonSave}
+                        <TouchableHighlight style={styles.saveBtn}
                             onPress={() => this.addQuote()}
                             underlayColor='#B78D6D'>
-                            <Text style={styles.saveText}>Save Quote</Text>
+                            <Text style={styles.saveTxt}>Save Quote</Text>
                         </TouchableHighlight>
                     </View>
             </View>
         );
-    }
-    border (color) {
-        return {
-            borderColor: color,
-            borderWidth: 2
-        }
     }
 }
 
@@ -147,7 +141,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    buttonSave: {
+    saveBtn: {
         flexDirection: 'row',
         justifyContent: 'center',
         height: 40,
@@ -157,7 +151,7 @@ const styles = StyleSheet.create({
         borderColor: '#704427',
         marginTop: 30
     },
-    saveText: {
+    saveTxt: {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',

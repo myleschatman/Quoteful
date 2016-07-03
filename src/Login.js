@@ -45,13 +45,14 @@ export default class Login extends Component {
             } else {
                 AsyncStorage.setItem('userData', JSON.stringify(userData));
                 this.props.navigator.immediatelyResetRouteStack([{
+                    name: 'Quoteful',
                     component: QuoteMain
                 }]);
             }
         });
     }
     register() {
-        this.props.navigator.push({
+        this.props.navigator.replace({
             component: Register
         });
     }
@@ -73,22 +74,22 @@ export default class Login extends Component {
                         placeholder="Password"
                         secureTextEntry={true}>
                 </TextInput>
-                <TouchableHighlight style={styles.buttonLogin}
+                <TouchableHighlight style={styles.loginBtn}
                     onPress={this.login.bind(this)}
                     underlayColor='transparent'>
-                    <Text style={styles.buttonText}>
+                    <Text style={styles.loginTxt}>
                         Log In
                     </Text>
                 </TouchableHighlight>
-                <TouchableHighlight style={styles.signup}
+                <TouchableHighlight style={styles.signupBtn}
                     onPress={() => this.register()}
                     underlayColor='transparent'>
                     <View style={{flexDirection: 'row'}}>
-                        <Text style={styles.signupText1}>
+                        <Text style={styles.signupTxt1}>
                             Dont have an account?
                         </Text>
                         <Text> </Text>
-                        <Text style={styles.signupText2}>
+                        <Text style={styles.signupTxt2}>
                             Sign Up
                         </Text>
                     </View>
@@ -126,7 +127,7 @@ const styles = StyleSheet.create({
         borderColor: 'transparent',
         color: '#B78D6D'
     },
-    buttonLogin: {
+    loginBtn: {
         alignSelf: 'stretch',
         justifyContent: 'center',
         height: 50,
@@ -134,22 +135,22 @@ const styles = StyleSheet.create({
         marginBottom: 100,
         backgroundColor: '#532B12',
     },
-    buttonText: {
+    loginTxt: {
         alignSelf: 'center',
         fontSize: 22,
         fontFamily: 'Avenir',
         color: '#B78D6D'
     },
-    signup: {
+    signupBtn: {
         marginTop: 40,
         padding: 10
     },
-    signupText1: {
+    signupTxt1: {
         textAlign: 'center',
         fontFamily: 'Avenir',
         color: '#B78D6D'
     },
-    signupText2: {
+    signupTxt2: {
         textAlign: 'center',
         fontFamily: 'Avenir',
         color: '#B78D6D',

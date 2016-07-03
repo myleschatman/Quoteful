@@ -2,11 +2,8 @@ import React, { Component } from 'react';
 import Firebase from 'firebase';
 import Share from 'react-native-share';
 import {
-    AppRegistry,
     StyleSheet,
     TouchableHighlight,
-    NavigatorIOS,
-    ListView,
     TextInput,
     Text,
     View
@@ -28,15 +25,13 @@ export default class QuoteEdit extends Component {
         return (
             <View style={styles.container}>
                 <View style={styles.rightContainer}>
-                    <TextInput
+                    <TextInput style={styles.input}
                         maxNumberOfLines={10}
-                        style={[styles.input, styles.text]}
                         value={this.state.newQuote}
                         onChangeText={(quote) => this.setState({newQuote: quote})}
                     />
-                    <TextInput
+                    <TextInput style={styles.input}
                         maxNumberOfLines={1}
-                        style={[styles.input, styles.text]}
                         value={this.state.newAuthor}
                         onChangeText={(author) => this.setState({newAuthor: author})}
                     />
@@ -50,7 +45,7 @@ export default class QuoteEdit extends Component {
                     <TouchableHighlight style={styles.share}
                         onPress={() => this.onShare()}>
                         <Text style={styles.shareText}>
-                            Social Share
+                            Share
                         </Text>
                     </TouchableHighlight>
                 </View>
@@ -79,12 +74,6 @@ export default class QuoteEdit extends Component {
             console.log(e);
         });
     }
-    border (color) {
-        return {
-            borderColor: color,
-            borderWidth: 4
-        }
-    }
 }
 
 const styles = StyleSheet.create({
@@ -93,12 +82,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#F6F1ED',
-        padding: 10
     },
-    text: {
-        fontSize: 15,
-        fontFamily: 'Avenir',
-        fontWeight: 'bold'
+    rightContainer: {
+        marginTop: 300,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     input: {
         height: 35,
@@ -106,7 +94,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         textAlign: 'left',
-        margin: 10,
+        fontSize: 15,
+        fontFamily: 'Avenir',
+
         fontWeight: 'bold'
     },
     button: {
@@ -118,7 +108,8 @@ const styles = StyleSheet.create({
         borderRadius: 6,
         borderWidth: 2,
         borderColor: '#6a5750',
-        marginTop: 30
+        marginTop: 30,
+        marginBottom: 185
     },
     btnText: {
         flexDirection: 'row',
@@ -131,7 +122,6 @@ const styles = StyleSheet.create({
     },
     share: {
         justifyContent: 'center',
-        padding: 10
     },
     shareText: {
       textAlign: 'center',

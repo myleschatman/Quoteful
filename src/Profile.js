@@ -1,13 +1,8 @@
 import React, { Component } from 'react';
-import Welcome from './Welcome';
+import Login from './Login';
 import {
     TouchableHighlight,
-    AsyncStorage,
     StyleSheet,
-    ListView,
-    NavigatorIOS,
-    TabBarIOS,
-    Image,
     Text,
     View
 } from 'react-native';
@@ -18,24 +13,21 @@ export default class QuoteRender extends Component {
     constructor(props) {
         super(props);
         let authData = ref.getAuth();
-        this.state = {
-
-        };
     }
     logout() {
         AsyncStorage.removeItem('userData').then(() => {
             ref.unauth();
-            this.props.navigator.immediatelyResetRouteStack([{
-                component: Welcome
-            }]);
+            this.props.navigator.resetTo({
+                component: Login
+            });
         });
     }
     render() {
         return(
             <View style={styles.container}>
-            <TouchableHighlight style={styles.button}
+            <TouchableHighlight style={styles.logoutBtn}
                 onPress={() => this.logout()}
-                underlayColor='#6a5750'>
+                underlayColor='#6A5750'>
                 <Text style={styles.btnText}>Logout</Text>
                 </TouchableHighlight>
             </View>
@@ -50,7 +42,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#F6F1ED',
     },
-    button: {
+    logoutBtn: {
         flexDirection: 'row',
         justifyContent: 'center',
         height: 40,

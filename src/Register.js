@@ -47,7 +47,7 @@ export default class Register extends Component {
         });
     }
     login() {
-        this.props.navigator.pop({
+        this.props.navigator.replace({
             component: Login
         });
     }
@@ -75,22 +75,22 @@ export default class Register extends Component {
                         placeholder="Password"
                         secureTextEntry={true}>
                 </TextInput>
-                <TouchableHighlight style={styles.registerButton}
+                <TouchableHighlight style={styles.registerBtn}
                     onPress={this.register.bind(this)}
                     underlayColor='transparent'>
-                    <Text style={styles.buttonText}>
+                    <Text style={styles.registerTxt}>
                         Register
                     </Text>
                 </TouchableHighlight>
-                <TouchableHighlight style={styles.signin}
+                <TouchableHighlight style={styles.signinBtn}
                     onPress={() => this.login()}
                     underlayColor='transparent'>
                     <View style={{flexDirection: 'row'}}>
-                        <Text style={styles.signinText1}>
+                        <Text style={styles.signinTxt1}>
                             Already have an account?
                         </Text>
                         <Text> </Text>
-                        <Text style={styles.signinText2}>
+                        <Text style={styles.signinTxt2}>
                             Sign In
                         </Text>
                     </View>
@@ -126,9 +126,9 @@ const styles = StyleSheet.create({
         fontSize: 18,
         borderWidth: 1,
         borderColor: 'transparent',
-        borderBottomColor: '#ccc'
+        color: '#B78D6D'
     },
-    registerButton: {
+    registerBtn: {
         alignSelf: 'stretch',
         justifyContent: 'center',
         height: 50,
@@ -136,21 +136,22 @@ const styles = StyleSheet.create({
         marginBottom: 70,
         backgroundColor: '#532B12'
     },
-    buttonText: {
-      fontSize: 22,
-      color: '#B78D6D',
-      alignSelf: 'center'
+    registerTxt: {
+        alignSelf: 'center',
+        fontSize: 22,
+        color: '#B78D6D',
+        alignSelf: 'center'
     },
-    signin: {
+    signinBtn: {
         marginTop: 70,
         padding: 10
     },
-    signinText1: {
+    signinTxt1: {
         textAlign: 'center',
         fontFamily: 'Avenir',
         color: '#B78D6D'
     },
-    signinText2: {
+    signinTxt2: {
         textAlign: 'center',
         fontFamily: 'Avenir',
         color: '#B78D6D',

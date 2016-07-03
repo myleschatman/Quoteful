@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import Login from './Login';
 import QuoteMain from './QuoteMain';
-import QuoteRender from './QuoteRender';
+import Icon from 'react-native-vector-icons/Ionicons';
 import Firebase from 'firebase';
 import {
     AsyncStorage,
     StyleSheet,
     Navigator,
+    TouchableHighlight,
     Text,
     View
 } from 'react-native';
@@ -17,7 +18,8 @@ export default class Welcome extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            component: null,
+            name: null,
+            component: null
         };
     }
     componentWillMount() {
@@ -30,6 +32,7 @@ export default class Welcome extends Component {
                         this.setState(component);
                     } else {
                         this.setState({
+                            name: 'Quoteful',
                             component: QuoteMain
                         });
                     }
@@ -39,17 +42,22 @@ export default class Welcome extends Component {
             }
         })
     }
-    renderScene(route, navigator) {
-        return <route.component route={route} navigator={navigator} {...route.passProps}/>
-    }
     render() {
         if (this.state.component) {
             return (
                 <Navigator style={styles.container}
                     initialRoute={{
+                        name: this.state.name,
                         component: this.state.component,
                     }}
-                    renderScene={this.renderScene.bind(this)}
+                    renderScene={(route, navigator) => {
+                        return <route.component route={this.props.route}
+                            navigator={navigator} {...route.passProps}/>
+                    }}
+                    navigationBar={
+                        <Navigator.NavigationBar style={styles.nav}
+                            routeMapper={NavigationBarRouteMapper} />
+                    }
                 />
             );
         } else {
@@ -60,11 +68,48 @@ export default class Welcome extends Component {
     }
 }
 
+var NavigationBarRouteMapper = {
+    LeftButton(route, navigator, index, navState) {
+        if (index > 0) {
+            return (
+                <TouchableHighlight
+                onPress={() => navigator.pop()}
+                underlayColor='transparent'>
+                    <Icon name="ios-arrow-back" size={30} style={styles.backBtn}/>
+                </TouchableHighlight>
+            );
+        }
+    },
+    RightButton(route, navigator, index, navState) {
+        return null;
+    },
+    Title(route, navigator, index, navState) {
+        return <Text style={styles.navBarText}>{route.name}</Text>
+    }
+};
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#704427'
-    }
+    },
+    nav: {
+        paddingTop: 31,
+        paddingBottom: 1.5,
+        backgroundColor: '#704427'
+    },
+    navBarText: {
+        marginTop: 5,
+        textAlign: 'center',
+        fontSize: 22,
+        fontFamily: 'Avenir',
+        fontWeight: '500',
+        color: '#FFFFFF',
+    },
+    backBtn: {
+        marginLeft: 20,
+        marginTop: 2
+    },
 });
 
 export default Welcome;
