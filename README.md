@@ -9,10 +9,10 @@ them to their liking.
 
 ## Screenshots
 
-<img src="./img/Login_Screen.png" width="48"></img>
-<img src="./img/Register_Screen.png" width="48"></img>
-<img src="./img/Quote_Screen.png" width="48"></img>
-<img src="./img/List_Screen.png" width="48"></img>
+<img src="./img/Login_Screen.png" width="200"></img>
+<img src="./img/Register_Screen.png" width="200"></img>
+<img src="./img/Quote_Screen.png" width="200"></img>
+<img src="./img/List_Screen.png" width="200"></img>
 
 ## Running application
     - git clone https://github.com/myleschatman/Quoteful
