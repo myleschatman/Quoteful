@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 
 const ref = new Firebase('https://shining-fire-4744.firebaseio.com');
-const QUOTE_API_KEY = 'fx_K6dXJn4bzzmH41HA44QeF';
+const QUOTE_API_KEY = '';
 const QUOTE_URL = 'http://quotes.rest/quote.json?minlength=200&maxlength=250&api_key=' + QUOTE_API_KEY;
 let IMAGE_SEARCH = 'https://api.gettyimages.com/v3/search/images?phrase='
 let IMAGE_URL = 'http://embed.gettyimages.com/oembed?url=http://gty.im/';
@@ -19,7 +19,7 @@ var obj = {
     headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'Api-Key': 'zdvrkj5tkqedvyawu3kc3a9r'
+        'Api-Key': ''
     },
 }
 
